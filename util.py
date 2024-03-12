@@ -4,6 +4,7 @@ import shutil
 import yaml
 import xml.etree.ElementTree as ET
 from sklearn.model_selection import train_test_split
+from ultralytics import YOLO
 
 # data extraction 
 def extract_data_from_xml(root_dir):
