@@ -11,7 +11,7 @@ Additionally, Scene Text Recognition plays a crucial role in various fields incl
 - Assistive Technologies: Helping visually impaired individuals by converting text from images into audio or braille formats.
 - Surveillance and Security: Extracting text from surveillance camera footage for identification or monitoring purposes.
 
-In this project, we will experiment the task on [ICDAR2003](http://www.iapr-tc11.org/mediawiki/index.php/ICDAR_2003_Robust_Reading_Competitions) dataset. You can download it via this [link](https://drive.google.com/file/d/1x9e2FNDlKc_lBkJvHvWSKKfCSSqNsQfM/view) or you can have it on the main page of the competition
+## In this project, we will experiment the task on [ICDAR2003](http://www.iapr-tc11.org/mediawiki/index.php/ICDAR_2003_Robust_Reading_Competitions) dataset. You can download it via this [link](https://drive.google.com/file/d/1x9e2FNDlKc_lBkJvHvWSKKfCSSqNsQfM/view) or you can have it on the main page of the competition
 =====
 
 ## A Scene Text Recognition program typically consists of two main stages:
