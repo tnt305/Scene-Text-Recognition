@@ -1,4 +1,6 @@
 import os
+import torchvision
+from torchvision import transforms
 import shutil
 import xml.etree.ElementTree as ET
 
