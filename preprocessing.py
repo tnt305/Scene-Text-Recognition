@@ -3,7 +3,6 @@ import os
 import shutil
 import yaml
 import xml.etree.ElementTree as ET
-from sklearn.model_selection import train_test_split
 from ultralytics import YOLO
 
 # data extraction 
@@ -109,3 +108,63 @@ def convert_to_yolov8_format(image_paths, image_sizes, bounding_boxes):
         yolov8_data.append((image_path, yolov8_labels))
 
     return yolov8_data
+
+def save_data(data, src_img_dir, save_dir):
+    """
+    Create folder for data in format YOLO
+    Folder format
+    ---save_dir
+            |_____images
+            |_____labels
+    """
+    os.makedirs(save_dir, exist_ok=True)
+    os.makedirs(os.path.join(save_dir, 'images'), exist_ok=True)
+    os.makedirs(os.path.join(save_dir, 'labels'), exist_ok=True)
+
+    # Duyệt qua từng bộ path, bbox, label ảnh
+    for image_path, yolov8_labels in data:
+        # Copy ảnh từ thư mục gốc sang thư mục 'images'
+        shutil.copy(
+            os.path.join(src_img_dir, image_path), 
+            os.path.join(save_dir, 'images')
+        )
+
+        # Ghi nội dung label vào file image_name.txt ở thư mục 'labels'
+        image_name = os.path.basename(image_path)
+        image_name = os.path.splitext(image_name)[0]
+
+        with open(os.path.join(save_dir, 'labels', f"{image_name}.txt"), 'w') as f:
+            for label in yolov8_labels:
+                f.write(f"{label}\n")
+
+def visualize_bbox(
+    img_path, predictions,
+    conf_thres=0.8,
+    font=cv2.FONT_HERSHEY_SIMPLEX
+):
+    img = cv2.imread(img_path)
+    h, w = img.shape[:2]
+    
+    for prediction in predictions:
+        conf_score = prediction['confidence']
+        
+        if conf_score < conf_thres:
+            continue
+            
+        bbox = prediction['box']
+        xmin = int(bbox['x1'])
+        ymin = int(bbox['y1'])
+        xmax = int(bbox['x2'])
+        ymax = int(bbox['y2'])
+        
+        cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (0, 255, 0), 3)
+
+
+        text = f"{conf_score:.2f}"
+        (text_width, text_height), _ = cv2.getTextSize(text, font, 1, 2)
+
+        cv2.rectangle(img, (xmin, ymin - text_height - 5), (xmin + text_width, ymin), (0, 255, 0), -1)
+        cv2.putText(img, text, (xmin, ymin - 5), font, 1, (0, 0, 0), 2)
+
+
+    return img
