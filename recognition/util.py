@@ -1,5 +1,6 @@
 import torch
 import os
+from torch.nn import functional as F
 
 def encode(label, char_to_idx, max_label_len):
     """
@@ -66,3 +67,4 @@ def decode(encoded_sequences, idx_to_char, blank_char='-'):
         decoded_sequences.append(''.join(decoded_label))
 
     return decoded_sequences
+

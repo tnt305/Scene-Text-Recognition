@@ -16,7 +16,7 @@ def arguments():
     arg.add_argument("--yolo_ckpt", action = 'store_true')
 
     arg.add_argument("--seed", default = 0, type = int)
-    arg.add_argument("val_size", default = 0.2)
+    arg.add_argument("--val_size", default = 0.2)
     arg.add_argument("--test_size", default = 0.125)
     arg.add_argument('--is_shuffle', default = True)
 
