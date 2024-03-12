@@ -3,7 +3,7 @@ import argparse
 import yaml
 import shutil
 from typing import List, int
-from preprocessing import extract_data_from_xml, convert_to_yolov8_format, save_data
+from process.preprocessing import extract_data_from_xml, convert_to_yolov8_format, save_data
 from sklearn.model_selection import train_test_split
 from ultralytics import YOLO
 

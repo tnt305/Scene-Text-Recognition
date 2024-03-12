@@ -4,6 +4,10 @@ import shutil
 import yaml
 import xml.etree.ElementTree as ET
 from ultralytics import YOLO
+import cv2
+import torch
+from torch import transforms
+
 
 # data extraction 
 def extract_data_from_xml(root_dir):
@@ -136,6 +140,47 @@ def save_data(data, src_img_dir, save_dir):
         with open(os.path.join(save_dir, 'labels', f"{image_name}.txt"), 'w') as f:
             for label in yolov8_labels:
                 f.write(f"{label}\n")
+
+
+
+data_transforms = {
+    # Dành cho dữ liệu train 
+    'train': transforms.Compose([
+        transforms.Resize((32, 100)), 
+        transforms.ColorJitter( 
+            brightness=0.5, 
+            contrast=0.5, 
+            saturation=0.5
+        ),
+        transforms.Grayscale(num_output_channels=1),
+        transforms.GaussianBlur(3),
+        transforms.RandomAffine(degrees=2, shear=2),  
+        transforms.RandomPerspective(
+            distortion_scale=0.4, 
+            p=0.5, 
+            interpolation=3
+        ),  
+        transforms.RandomRotation(degrees=2),
+        transforms.ToTensor(),  
+        transforms.Normalize((0.5,), (0.5,)), 
+    ]),
+    # Dành cho dữ liệu val, test
+    'val': transforms.Compose([
+        transforms.Resize((32, 100)), 
+        transforms.Grayscale(num_output_channels=1),
+        transforms.ToTensor(),  
+        transforms.Normalize((0.5,), (0.5,)), 
+    ]),
+}
+
+
+
+
+
+
+
+
+
 
 def visualize_bbox(
     img_path, predictions,
